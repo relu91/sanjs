@@ -13,5 +13,8 @@
     "iot"
   ],
   "author": "Cristiano Aguzzi",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mocha": "^5.0.5"
+  }
 }
