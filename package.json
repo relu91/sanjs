@@ -1,0 +1,17 @@
+{
+  "name": "sanjs",
+  "version": "0.1.0",
+  "description": "A api to interact with Sensor Area Network protocol",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "serial",
+    "sensor",
+    "core",
+    "iot"
+  ],
+  "author": "Cristiano Aguzzi",
+  "license": "MIT"
+}
