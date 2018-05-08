@@ -4,7 +4,12 @@
   "description": "A api to interact with Sensor Area Network protocol",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "coverage" : "nyc --reporter=html mocha",
+    "start": "index.js"
+  },
+  "bin": {
+    "sanjs": "./bin/sanj.js"
   },
   "keywords": [
     "serial",
@@ -15,6 +20,16 @@
   "author": "Cristiano Aguzzi",
   "license": "MIT",
   "dependencies": {
-    "mocha": "^5.0.5"
+    "chalk": "^2.4.1",
+    "commander": "^2.15.1",
+    "eslint": "^4.19.1",
+    "machina": "^2.0.2",
+    "mocha": "^5.0.5",
+    "progress": "^2.0.0",
+    "serialport": "^6.1.1"
+  },
+  "devDependencies": {
+    "eslint-plugin-mocha": "^5.0.0",
+    "nyc": "^11.7.1"
   }
 }
