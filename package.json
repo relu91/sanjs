@@ -13,7 +13,7 @@
     "start": "index.js"
   },
   "bin": {
-    "sanjs": "./bin/sanj.js"
+    "sanjs": "./bin/sanjs.js"
   },
   "keywords": [
     "serial",
