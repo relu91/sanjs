@@ -25,6 +25,11 @@ cli
     .alias("sc")
     .action(scmd)
 cli
+    .command("broadcast <port> <code> [data...]")
+    .description("Send a broadcast command to all sensors")
+    .alias("b")
+    .action(broadcast)
+cli
     .command("sqry <port> <addrs> <code> [data...]")
     .description("Send a short query to a sensor address")
     .alias("sq")
@@ -67,6 +72,23 @@ function scmd(port,address,cmdcode,data,cmd) {
     }).catch((error) => {
         utils.print(quiet,chalk.bgRed("Cannot connect"),error)
     }).then(SAN.close.bind(SAN))
+}
+
+function broadcast(port, cmdcode, data,cmd) {
+    let quiet = cmd.parent.quiet
+    let sanCmd = utils.toCommand(cmdcode)
+
+    utils.print(quiet)
+    utils.print(quiet, chalk.bold(chalk.green("Sending"), utils.prettyStrCmd(cmdcode),
+        "command to all devices", "on port", chalk.bold(port)))
+
+    const serial = new SerialPort(port, {
+        baudRate: 500000
+    })
+
+   
+    const SAN = sanj(serial)
+    SAN.broadcast(sanCmd, data).then(SAN.close.bind(SAN))
 }
 
 function sqry(port, address, cmdcode, data, cmd) {
