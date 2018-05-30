@@ -125,12 +125,25 @@ function lqry(port, address, cmdcode, data, cmd) {
     const serial = new SerialPort(port, {
         baudRate: 500000
     })
-
+    //Patch to print all buffer
+    Buffer.prototype.toString = utils.fullBufferToString
+    
     const SAN = sanj(serial)
     SAN.LongQuery(address,sanCmd,data).then((result) => {
+        let bold = quiet ? (data) => data : chalk.bold
         utils.print(quiet, chalk.green.bold("Ok"))
         utils.print(quiet)
-        utils.print(false, chalk.bold("Data"),result)
+        
+        result.forEach(buffer => {
+            process.stdout.write(bold("Data"))
+            process.stdout.write(" ")
+            for (const b of buffer) {
+                process.stdout.write(b.toString(16))
+                process.stdout.write(" ")
+            }
+            process.stdout.write("\n")
+        })
+
         utils.print(quiet)
     }).catch((error) => {
         utils.print(quiet, chalk.bgRed("Cannot connect"), error)
