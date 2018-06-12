@@ -21,7 +21,7 @@ describe("Sensor area network api tests", () => {
 
     it("Short command with high value args", () => {
         port.once("self", (data) => {
-            assert.deepEqual([170,89,149,170],[...data.slice(5,9)])
+            assert.deepEqual([170,89,149,170],[...data.slice(7,11)])
             port.respond(Buffer.from([reserved.CMDACKN]))
         })
         return client.shortCommand(0, 0, [2000])
@@ -29,7 +29,7 @@ describe("Sensor area network api tests", () => {
 
     it("Short query test", () => {
         port.once("self", () => {
-            port.respond(Buffer.from([202,0,0,172]))
+            port.respond(Buffer.from([reserved.CMDSTRT,0,0,reserved.CMDSTOP]))
         })
         return client.shortQuery(1, 2, [3]).then((data) => {
             assert.equal(0,data[0],"Wrong query response")

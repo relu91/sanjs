@@ -92,6 +92,15 @@ describe("Parser tests", () => {
             this.stream.push(Buffer.from(data))
 
         })
+        it("Command with SYNCPKT preamble", (done) => {
+            let data = [reserved.SYNCPKT, reserved.SYNCPKT,reserved.CMDSTRT, 1,2, reserved.CMDSTOP]
+            this.parser.on("data", (newData) => {
+                assert.deepEqual(newData, [reserved.CMDSTRT, 1, 2, reserved.CMDSTOP])
+                done()
+            })
+            this.stream.push(Buffer.from(data))
+
+        })
     })
 
     describe("Data packets", () => {
