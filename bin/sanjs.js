@@ -7,6 +7,7 @@ const chalk = require("chalk")
 const ProgressBar = require("progress")
 const SerialPort = require("serialport")
 const utils = require("./utils")
+const debug = require("debug")
 
 
 
@@ -46,6 +47,7 @@ cli
     .action(list)
 cli
     .option("-q, --quiet","suppres all info output")
+    .option("-d, --debug","show the debug output")
 cli.parse(process.argv)
 
 if (cli.args.length < 1) {
@@ -54,6 +56,7 @@ if (cli.args.length < 1) {
 }
 
 function scmd(port,address,cmdcode,data,cmd) {
+    cmd.parent.debug && debug.enable("handler")
     let quiet = cmd.parent.quiet
     let sanCmd = utils.toCommand(cmdcode)
     
@@ -75,6 +78,7 @@ function scmd(port,address,cmdcode,data,cmd) {
 }
 
 function broadcast(port, cmdcode, data,cmd) {
+    cmd.parent.debug && debug.enable("handler")
     let quiet = cmd.parent.quiet
     let sanCmd = utils.toCommand(cmdcode)
 
@@ -92,6 +96,7 @@ function broadcast(port, cmdcode, data,cmd) {
 }
 
 function sqry(port, address, cmdcode, data, cmd) {
+    cmd.parent.debug && debug.enable("handler")
     let quiet = cmd.parent.quiet
     let sanCmd = utils.toCommand(cmdcode)
 
@@ -115,6 +120,7 @@ function sqry(port, address, cmdcode, data, cmd) {
 }
 
 function lqry(port, address, cmdcode, data, cmd) {
+    cmd.parent.debug && debug.enable("handler")
     let quiet = cmd.parent.quiet
     let sanCmd = utils.toCommand(cmdcode)
 
@@ -161,6 +167,7 @@ function list() {
 }
 
 function discover(port,cmd) {
+    cmd.parent.debug && debug.enable("handler")
     let quiet = cmd.parent.quiet
     var chain = Promise.resolve()
     const serial = new SerialPort(port, {
@@ -209,13 +216,12 @@ function printSensors(sensors,quiet) {
         utils.print(false,bgRed("No sensor"))
     }
     
-    process.stdout.write("  "+bold(sensors[0]))
+    sensors.length && process.stdout.write("  "+bold(sensors[0]))
     for (let i = 1; i < sensors.length; i++) {
         const element = sensors[i]
         process.stdout.write("--")
         process.stdout.write(""+bold(element))
     }
-    console.log()
     utils.print(quiet)
 }
 
