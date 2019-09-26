@@ -45,9 +45,11 @@ cli
     .description("List all known SAN common commands")
     .alias("ls")
     .action(list)
+cli.boud = 500000
 cli
     .option("-q, --quiet","suppres all info output")
     .option("-d, --debug","show the debug output")
+    .option("-b, --boud <boud>","set the boudrate of the serial port. Default: 500000")
 cli.parse(process.argv)
 
 if (cli.args.length < 1) {
@@ -105,7 +107,7 @@ function sqry(port, address, cmdcode, data, cmd) {
         "command to device", chalk.yellow(address)), "on port", chalk.bold(port))
 
     const serial = new SerialPort(port, {
-        baudRate: 500000
+        baudRate: parseInt(cmd.parent.boud)
     })
 
     const SAN = sanj(serial)
@@ -129,7 +131,7 @@ function lqry(port, address, cmdcode, data, cmd) {
         "command to device", chalk.yellow(address)), "on port", chalk.bold(port))
 
     const serial = new SerialPort(port, {
-        baudRate: 500000
+        baudRate: parseInt(cmd.parent.boud)
     })
     //Patch to print all buffer
     Buffer.prototype.toString = utils.fullBufferToString
@@ -171,7 +173,7 @@ function discover(port,cmd) {
     let quiet = cmd.parent.quiet
     var chain = Promise.resolve()
     const serial = new SerialPort(port, {
-        baudRate: 500000
+        baudRate: parseInt(cmd.parent.boud)
     })
     utils.print(quiet)
     utils.print(quiet,chalk.green.bold("Start"), "discovering on port: ",chalk.bold(port))
@@ -186,7 +188,7 @@ function discover(port,cmd) {
     var sensors = []
     for (let index = 0; index < 255; index++) {
         chain = chain.then(() => {
-            return test.shortQuery(index, 13,[],20).then((data) => {
+            return test.shortQuery(index, 3,[],20).then((data) => {
                 if (data[0] === 0) {
                     sensors.push(index)
                 }
