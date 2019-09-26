@@ -2,6 +2,8 @@ const handlers = require("../lib/handlers")
 const FakeSerial = require("./fakeSerial")
 const assert = require("assert")
 const reserved = require("../lib/reserved")
+const encode = require("../lib/transform").encode
+const decode = require("../lib/transform").decode
 
 
 describe("Handler tests", () => {
@@ -136,7 +138,7 @@ describe("Handler tests", () => {
             let datapck = [reserved.DATSTRT, 1,2,3,4, reserved.DATSTOP]
             this.handler.on("transitioned", function (data) {
                 if (data.toState === "wait") {
-                    stream.respond([reserved.CMDSTRT, 0,1,1,0, reserved.CMDSTOP])
+                    stream.respond([reserved.CMDSTRT, ...encode([0,1,1,0]), reserved.CMDSTOP])
                 } else if (data.toState === "bufferDataPck"){
                     stream.respond(datapck)
                 }
@@ -151,12 +153,51 @@ describe("Handler tests", () => {
 
             this.handler.on("dataStart", (data) => {
                 assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck"])
-                assert.deepEqual(data, [0,1,1,0])
+                assert.deepEqual(decode(data), [0,1,1,0])
             })
 
             this.handler.on("error", done)
             this.handler.start([])
         })
+
+        it("Timeout command packet", (done) => {
+
+            this.handler.on("error", (err) => {
+                try {
+                    assert.deepEqual(this.recorder.states, ["send", "wait", "timeout", "error"])
+                    assert.notStrictEqual(err, new Error("Timeout during shortquery"))
+                    done()
+                } catch (error) {
+                    done(error)
+                }
+            })
+            this.handler.initialize(this.stream, this.stream, 100)
+            this.handler.start([])
+        })
+
+        it("Timeout data packet", (done) => {
+            let stream = this.stream
+    
+            this.handler.on("transitioned", function (data) {
+                if (data.toState === "wait") {
+                    stream.respond([reserved.CMDSTRT, ...encode([0, 1, 1, 0]), reserved.CMDSTOP])
+                } 
+            })
+
+            this.handler.on("error", (err) => {
+                try {
+                    assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck", "bufferDataPck", "timeout", "error"])
+                    assert.notStrictEqual(err, new Error("Timeout during shortquery"))
+                    done()
+                } catch (error) {
+                    done(error)
+                }
+            })
+            this.handler.initialize(this.stream, this.stream, 100)
+            this.handler.start([])
+        })
+
+
 
     })
     describe("Command handler", () => {
