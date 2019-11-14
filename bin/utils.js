@@ -1,28 +1,29 @@
 /*eslint no-console: off*/
 const KnownCmds = Object.freeze(
     {
-        CMDGO: 0, // Exectute command
-        CMDTEST: 1,       // Exectute selftest
-        CMDRESET: 2,      // Exectute reset
-        CMDSETADD: 3,     // Set local address
-        CMDSETTRGM: 4,    // Set trigger mode
-        CMDSETTHRMC1: 5,  // Set threshold mode for CH1
-        CMDSETTHRMC2: 6,  // Set threshold mode for CH2
-        CMDSETTHRMC3: 7,  // Set threshold mode for CH3
-        CMDSETSMP: 8,     // Set total sample number
-        CMDSETPRE: 9,     // Set pretrigger sample number
-        CMDSETTHRVC1: 10, // Set threshold levels for CH1
-        CMDSETTHRVC2: 11, // Set threshold levels for CH2
-        CMDSETTHRVC3: 12, // Set threshold levels for CH3
-        CMDGETVREF: 13,   // Get the internal Vref
-        CMDSETDAC: 14,    // Set the DAC output voltage
-        CMDSETTIM: 15,    // Set the timer period
-        CMDGETDATA: 16,   // Get the acquired data
-        CMDGETANGLE: 17,  // Get the processed data
-        CMDSETGRANGE: 20, // Set the maximum G range
-        CMDSETRES: 21,    // Set data resolution
-        CMDSETOPMODE: 22, // Set operating mode
-        CMDECHO: 255      // Echo the incoming message
+        CMDGO      : 0, //Exectute command
+        CMDTEST    : 1, //Exectute selftest
+        CMDSYNC    : 2, //Set localtime to 0
+        CMDGETVREF : 3, //Get the internal Vref
+
+        // Data acquisition system
+        CMDSETTRGM    : 4,  //Set trigger mode
+        CMDSETCHEN    : 5,  //Set channel enable
+        CMDSETTHRM    : 6,  //Set threshold mode
+        CMDSETTHRV    : 7,  //Set threshold levels
+        CMDSETSMP     : 8,  //Set total sample number
+        CMDSETPRE     : 9,  //Set pretrigger sample number
+        CMDSETTRGTOUT : 10, //Set the trigger timeout
+        CMDGETDATA    : 11, //Get the acquired data
+        CMDHALT       : 12, //Stop the acquisition system
+
+        // SAN basic commands
+        CMDRESET   : 250, // Exectute reset
+        CMDSETADD  : 251, // Set local address
+        CMDCHAIN   : 252, // Exectute reset
+        CMDSETNEXT : 253, // Set local address
+        CMDSETPREV : 254, // Exectute reset
+        CMDECHO    : 255, // Echo the incoming message
     }
 )
 
