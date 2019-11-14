@@ -31,7 +31,7 @@
     "machina": "^2.0.2",
     "mocha": "^5.1.1",
     "progress": "^2.0.0",
-    "serialport": "^6.2.0"
+    "serialport": "^8.0.5"
   },
   "devDependencies": {
     "eslint-plugin-mocha": "^5.0.0",
