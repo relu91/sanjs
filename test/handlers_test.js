@@ -102,7 +102,7 @@ describe("Handler tests", () => {
 
             this.handler.on("error", (err) => {
                 try {
-                    assert.deepEqual(this.recorder.states, ["send", "wait","timeout","error"])
+                    assert.deepEqual(this.recorder.states, ["send", "wait","timeout"])
                     assert.notStrictEqual(err, new Error("Timeout during shortquery"))
                     done()
                 } catch (error) {
@@ -164,7 +164,7 @@ describe("Handler tests", () => {
 
             this.handler.on("error", (err) => {
                 try {
-                    assert.deepEqual(this.recorder.states, ["send", "wait", "timeout", "error"])
+                    assert.deepEqual(this.recorder.states, ["send", "wait", "timeout"])
                     assert.notStrictEqual(err, new Error("Timeout during shortquery"))
                     done()
                 } catch (error) {
@@ -186,7 +186,7 @@ describe("Handler tests", () => {
 
             this.handler.on("error", (err) => {
                 try {
-                    assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck", "bufferDataPck", "timeout", "error"])
+                    assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck", "bufferDataPck", "timeout"])
                     assert.notStrictEqual(err, new Error("Timeout during shortquery"))
                     done()
                 } catch (error) {
@@ -278,7 +278,7 @@ describe("Handler tests", () => {
 
             this.handler.on("error", (err) => {
                 try {
-                    assert.deepEqual(this.recorder.states, ["send", "wait", "timeout","error"])
+                    assert.deepEqual(this.recorder.states, ["send", "wait", "timeout"])
                     assert.notStrictEqual(err, new Error("Timeout during shortquery"))
                     done()
                 } catch (error) {
