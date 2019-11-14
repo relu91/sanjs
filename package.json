@@ -27,13 +27,13 @@
     "chalk": "^2.4.1",
     "commander": "^2.15.1",
     "debug": "^3.1.0",
-    "eslint": "^4.19.1",
     "machina": "^2.0.2",
     "mocha": "^5.1.1",
     "progress": "^2.0.0",
     "serialport": "^8.0.5"
   },
   "devDependencies": {
+    "eslint": "^6.6.0",
     "eslint-plugin-mocha": "^5.0.0",
     "nyc": "^11.8.0"
   }
