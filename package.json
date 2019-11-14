@@ -1,6 +1,6 @@
 {
   "name": "@arces-wot/sanjs",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "API to interact with Sensor Area Network protocol",
   "main": "index.js",
   "repository": {
