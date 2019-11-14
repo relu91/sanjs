@@ -8,6 +8,7 @@ const ProgressBar = require("progress")
 const SerialPort = require("serialport")
 const utils = require("./utils")
 const debug = require("debug")
+const discovery = require("../lib/discovery").discover
 
 
 
@@ -168,7 +169,7 @@ function list() {
     }
 }
 
-function discover(port,cmd) {
+async function discover(port,cmd) {
     cmd.parent.debug && debug.enable("handler")
     let quiet = cmd.parent.quiet
     var chain = Promise.resolve()
@@ -185,29 +186,14 @@ function discover(port,cmd) {
             total: 255
         })
     const test = sanj(serial)
-    var sensors = []
-    for (let index = 0; index < 255; index++) {
-        chain = chain.then(() => {
-            return test.shortQuery(index, 3,[],20).then((data) => {
-                if (data[0] === 0) {
-                    sensors.push(index)
-                }
-            }).catch(() => {}).then(() => {
-                if(!quiet)
-                    bar.tick(1,{"count": sensors.length})
-            })
-        })
-
-    }
-    chain.catch((e) => {
-        console.error(e)
-    }).then(() => {
-        utils.print(quiet)
-        utils.print(quiet,"Sensor addresses found:")
-        printSensors(sensors,quiet)
-        utils.print(quiet)        
-        test.close()
+    let sensors = await discovery(test,50,(progess,found) =>{
+        bar.tick(1, { "count": found })
     })
+    utils.print(quiet)
+    utils.print(quiet, "Sensor addresses found:")
+    printSensors(sensors, quiet)
+    utils.print(quiet)
+    test.close()
 }
 
 function printSensors(sensors,quiet) {
