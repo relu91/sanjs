@@ -1,0 +1,10 @@
+language: node_js
+node_js: node
+deploy:
+  provider: npm
+  email: relu.cri@gmail.com
+  api_key:
+    secure: CLwPVd0Ir/u4hQeMbAbHa14nowqVtnn83xZ8ra7Y5BeaH3iwAwz2zwBJWRNj7M4d/Hbqya62ga3H7kOuSTe4/SPf564obMR+5n/wWYS2mmY89gVhFWOrQvmomDZchKwSonhkjrR85mRmFXZD3k0ol3mGiBW3huGCLn0SOB+IBc/Q6pkvLhfN0AQcXPHp7E3yKNpj2g4J61vwDx6erG9gf4avmcs84Ua4hstar8t4AJajf5kvtIOrTtYdg9/Ri5behSZuWwCm2tW6H7IEdjxYEIykl6B0p23BVD7RK05gy+V6wSHo8IuAgjUFOj3yPbQloL+nhtxfr/27D8EjMGZfVyMqOOWA5pNknIJm8s3RmzSLWymV2LsKMH2T81LOTgsERVVWwzmdCTSf6tUgA9pCvHk1GH4HPdR4ugw95f8/nzBgE8LyW5ZqdQT7QQ0ExKlzdWwgl8qt+HiJ7OYR6nKVqNRDrdX+0kaw/80c85iA9H4M/5VhIkeGlBfXCVE6Hh4SoxGUfVfpveZKnjjaBJi/+ld2YiaeDbC6RaLpOws/EiUZfiMkESxWStpDTtTI3y+joH6TOGGQoSwrAFZ29akS72yEmV8RqGCFqIDM+/VQwc/27LDAhmSFcad5hnO+bgN1P1WWwqmv5nI/Y5ddEC7H+D29Dk/9ahigCqNf5K2OJEo=
+  on:
+    tags: true
+    repo: arces-wot/sanjs
