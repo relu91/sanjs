@@ -21,7 +21,7 @@ describe("Sensor area network api tests", () => {
 
     it("Short command with high value args", () => {
         port.once("self", (data) => {
-            assert.deepEqual([170,89,149,170],[...data.slice(7,11)])
+            assert.deepEqual([170,89,149,170],[...data.slice(9,13)])
             port.respond(Buffer.from([reserved.CMDACKN]))
         })
         return client.shortCommand(0, 0, [2000])
