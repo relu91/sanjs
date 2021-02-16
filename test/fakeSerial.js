@@ -1,10 +1,13 @@
-const EventEmitter = require("events")
+const { Readable } = require("stream")
 
-class FakeSerial extends EventEmitter {
-
+class FakeSerial extends Readable {
+    constructor(){
+        super();
+        this.data = []
+    }
     write(data,cb){
         this.emit("self",data)
-       
+        this.data = data;
         if(cb){cb()}
     }
 
@@ -15,8 +18,8 @@ class FakeSerial extends EventEmitter {
         }
     }
 
-    pipe(stream){
-        this.stream = stream
+    _read(){
+        return this.data;
     }
 }
 
