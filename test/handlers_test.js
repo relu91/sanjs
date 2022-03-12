@@ -120,7 +120,7 @@ describe("Handler tests", () => {
             this.handler.on("transitioned", function (data) {
                
                 if (data.toState === "wait" ) {
-                    packet++;
+                    packet++
                     packet === 2 && stream.respond([reserved.CMDSTRT, 2, reserved.CMDSTOP])
                 } else if (data.toState === "ready") {
                     done()
@@ -145,7 +145,7 @@ describe("Handler tests", () => {
             this.handler.on("transitioned", function (data) {
                
                 if (data.toState === "wait" ) {
-                    packet++;
+                    packet++
                     packet === 6 && stream.respond([reserved.CMDSTRT, 2, reserved.CMDSTOP])
                 } else if (data.toState === "ready") {
                     done()
@@ -278,7 +278,7 @@ describe("Handler tests", () => {
             this.handler.on("transitioned", function (data) {
 
                 if (data.toState === "wait") {
-                    packet++;
+                    packet++
                     packet === 2 && stream.respond([reserved.CMDSTRT, ...encode([0, 1, 1, 0]), reserved.CMDSTOP])
                 } else if (data.toState === "bufferDataPck") {
                     stream.respond(datapck)
@@ -289,7 +289,7 @@ describe("Handler tests", () => {
             this.handler.on("data", (data) => {
                 assert.deepEqual(this.recorder.states, ["send", "wait", "retry", "send", "wait", "handle", "sendAck", "bufferDataPck"])
                 assert.deepEqual(Array.from(data), datapck.slice(1, datapck.length - 1))
-                done();
+                done()
             })
 
             this.handler.on("dataStart", (data) => {
@@ -310,7 +310,7 @@ describe("Handler tests", () => {
             this.handler.on("transitioned", function (data) {
 
                 if (data.toState === "wait") {
-                    packet++;
+                    packet++
                     packet === 6 && stream.respond([reserved.CMDSTRT, ...encode([0, 1, 1, 0]), reserved.CMDSTOP])
                 } else if (data.toState === "bufferDataPck") {
                     stream.respond(datapck)
@@ -325,7 +325,7 @@ describe("Handler tests", () => {
                 }
                 assert.deepEqual(this.recorder.states, [...states, "send", "wait", "handle", "sendAck", "bufferDataPck"])
                 assert.deepEqual(Array.from(data), datapck.slice(1, datapck.length - 1))
-                done();
+                done()
             })
 
             this.handler.on("dataStart", (data) => {
@@ -456,7 +456,7 @@ describe("Handler tests", () => {
             this.handler.on("transitioned", function (data) {
 
                 if (data.toState === "wait") {
-                    packet++;
+                    packet++
                     packet === 2 && stream.respond([reserved.CMDACKN])
                 } else if (data.toState === "ready") {
                     done()
@@ -481,7 +481,7 @@ describe("Handler tests", () => {
             this.handler.on("transitioned", function (data) {
 
                 if (data.toState === "wait") {
-                    packet++;
+                    packet++
                     packet === 6 && stream.respond([reserved.CMDACKN])
                 } else if (data.toState === "ready") {
                     done()

@@ -19,16 +19,16 @@ describe("Sensor area network api tests", () => {
         return client.shortCommand(1,2,[3])
     })
 
-    it('Dirty bytes test', () => {
+    it("Dirty bytes test", () => {
         port.once("self", () => {
             port.respond(Buffer.from([reserved.CMDACKN]))
         })
         //Forcing parser to buffer data
         client.parser.pause()
-        port.push(Buffer.from([reserved.NOTACKN,reserved.NOTACKN,reserved.NOTACKN]));
-        client.parser.resume();
+        port.push(Buffer.from([reserved.NOTACKN,reserved.NOTACKN,reserved.NOTACKN]))
+        client.parser.resume()
         return client.shortCommand(1,2,[3])
-    });
+    })
 
     it("Short command with high value args", () => {
         port.once("self", (data) => {

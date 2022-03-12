@@ -2,12 +2,12 @@ const { Readable } = require("stream")
 
 class FakeSerial extends Readable {
     constructor(){
-        super();
+        super()
         this.data = []
     }
     write(data,cb){
         this.emit("self",data)
-        this.data = data;
+        this.data = data
         if(cb){cb()}
     }
 
@@ -19,7 +19,7 @@ class FakeSerial extends Readable {
     }
 
     _read(){
-        return this.data;
+        return this.data
     }
 }
 
