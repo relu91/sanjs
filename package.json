@@ -1,6 +1,6 @@
 {
   "name": "@arces-wot/sanjs",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "API to interact with Sensor Area Network protocol",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "lint" : "eslint .",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "coverage": "nyc mocha",
     "coverage:html": "nyc --reporter=html mocha",
