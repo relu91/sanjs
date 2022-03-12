@@ -32,7 +32,7 @@
     "debug": "^3.1.0",
     "machina": "^4.0.2",
     "progress": "^2.0.0",
-    "serialport": "^8.0.5"
+    "serialport": "^8.0.8"
   },
   "devDependencies": {
     "eslint": "^8.11.0",
