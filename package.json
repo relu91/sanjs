@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "coverage": "nyc --reporter=html mocha",
+    "coverage": "nyc mocha",
+    "coverage:html": "nyc --reporter=html mocha",
     "start": "index.js"
   },
   "bin": {
