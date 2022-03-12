@@ -59,7 +59,7 @@ describe("Sensor area network api tests", () => {
         })
 
         return client.LongQuery(1, 2, [3]).then((data) => {
-            assert.deepEqual([0,1,1,0], data[0], "Wrong header response")
+            assert.deepEqual(Buffer.from([0,1,1,0]), data[0], "Wrong header response")
             assert.equal(24, data[1][0], "Wrong query response")
         })
     })
@@ -78,7 +78,7 @@ describe("Sensor area network api tests", () => {
         })
 
         return client.LongQuery(1, 2, [3]).then((data) => {
-            assert.deepEqual([0, 1, 2, 0], data[0], "Wrong header response")
+            assert.deepEqual(Buffer.from([0, 1, 2, 0]), data[0], "Wrong header response")
             assert.equal(24, data[1][0], "Wrong query response")
             assert.equal(42, data[2][0], "Wrong query response")
         })

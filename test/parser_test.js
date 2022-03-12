@@ -14,7 +14,7 @@ describe("Parser tests", () => {
         it("Simple command", (done) => {
             let data = [reserved.CMDSTRT, 1, reserved.CMDSTOP]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, data)
+                assert.deepEqual(Array.from(newData), data)
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -23,7 +23,7 @@ describe("Parser tests", () => {
             let data1 = [reserved.CMDSTRT, 1, 2]
             let data2 = [reserved.CMDSTOP]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, [reserved.CMDSTRT, 1, 2, reserved.CMDSTOP])
+                assert.deepEqual(Array.from(newData), [reserved.CMDSTRT, 1, 2, reserved.CMDSTOP])
                 done()
             })
             this.stream.push(Buffer.from(data1))
@@ -32,7 +32,7 @@ describe("Parser tests", () => {
         it("Embedded Command", (done) => {
             let data = [1, 2, 3, reserved.CMDSTRT, 1, reserved.CMDSTOP, 1, 23]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, [reserved.CMDSTRT, 1, reserved.CMDSTOP])
+                assert.deepEqual(Array.from(newData), [reserved.CMDSTRT, 1, reserved.CMDSTOP])
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -43,11 +43,11 @@ describe("Parser tests", () => {
             let next = false
             this.parser.on("data", (newData) => {
                 if (!next) {
-                    assert.deepEqual(newData, [reserved.CMDSTRT, 1, reserved.CMDSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.CMDSTRT, 1, reserved.CMDSTOP])
                     next = true
                 }
                 else {
-                    assert.deepEqual(newData, [reserved.CMDSTRT, 2, reserved.CMDSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.CMDSTRT, 2, reserved.CMDSTOP])
                     done()
                 }
             })
@@ -60,11 +60,11 @@ describe("Parser tests", () => {
             let next = false
             this.parser.on("data", (newData) => {
                 if (!next) {
-                    assert.deepEqual(newData, [reserved.CMDSTRT, 1, reserved.CMDSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.CMDSTRT, 1, reserved.CMDSTOP])
                     next = true
                 }
                 else {
-                    assert.deepEqual(newData, [reserved.CMDSTRT, 2, reserved.CMDSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.CMDSTRT, 2, reserved.CMDSTOP])
                     done()
                 }
             })
@@ -76,7 +76,7 @@ describe("Parser tests", () => {
         it("Primitive command", (done) => {
             let data = [reserved.CMDACKN]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, [reserved.CMDACKN])
+                assert.deepEqual(Array.from(newData), [reserved.CMDACKN])
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -86,7 +86,7 @@ describe("Parser tests", () => {
         it("Command with primitive command interlieved", (done) => {
             let data = [reserved.CMDSTRT, 1, reserved.CMDACKN, reserved.CMDSTOP]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, data)
+                assert.deepEqual(Array.from(newData), data)
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -95,7 +95,7 @@ describe("Parser tests", () => {
         it("Command with SYNCPKT preamble", (done) => {
             let data = [reserved.SYNCPKT, reserved.SYNCPKT,reserved.CMDSTRT, 1,2, reserved.CMDSTOP]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, [reserved.CMDSTRT, 1, 2, reserved.CMDSTOP])
+                assert.deepEqual(Array.from(newData), [reserved.CMDSTRT, 1, 2, reserved.CMDSTOP])
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -112,7 +112,7 @@ describe("Parser tests", () => {
         it("Simple data packet", (done) => {
             let data = [reserved.DATSTRT, 1, reserved.DATSTOP]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, data)
+                assert.deepEqual(Array.from(newData), data)
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -121,7 +121,7 @@ describe("Parser tests", () => {
             let data1 = [reserved.DATSTRT, 1, 2]
             let data2 = [reserved.DATSTOP]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, [reserved.DATSTRT, 1, 2, reserved.DATSTOP])
+                assert.deepEqual(Array.from(newData), [reserved.DATSTRT, 1, 2, reserved.DATSTOP])
                 done()
             })
             this.stream.push(Buffer.from(data1))
@@ -130,7 +130,7 @@ describe("Parser tests", () => {
         it("Embedded data packet", (done) => {
             let data = [1, 2, 3, reserved.DATSTRT, 1, reserved.DATSTOP, 1, 23]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, [reserved.DATSTRT, 1, reserved.DATSTOP])
+                assert.deepEqual(Array.from(newData), [reserved.DATSTRT, 1, reserved.DATSTOP])
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -141,11 +141,11 @@ describe("Parser tests", () => {
             let next = false
             this.parser.on("data", (newData) => {
                 if (!next) {
-                    assert.deepEqual(newData, [reserved.DATSTRT, 1, reserved.DATSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.DATSTRT, 1, reserved.DATSTOP])
                     next = true
                 }
                 else {
-                    assert.deepEqual(newData, [reserved.DATSTRT, 2, reserved.DATSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.DATSTRT, 2, reserved.DATSTOP])
                     done()
                 }
             })
@@ -158,11 +158,11 @@ describe("Parser tests", () => {
             let next = false
             this.parser.on("data", (newData) => {
                 if (!next) {
-                    assert.deepEqual(newData, [reserved.DATSTRT, 1, reserved.DATSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.DATSTRT, 1, reserved.DATSTOP])
                     next = true
                 }
                 else {
-                    assert.deepEqual(newData, [reserved.DATSTRT, 2, reserved.DATSTOP])
+                    assert.deepEqual(Array.from(newData), [reserved.DATSTRT, 2, reserved.DATSTOP])
                     done()
                 }
             })
@@ -174,7 +174,7 @@ describe("Parser tests", () => {
         it("Primitive data packet", (done) => {
             let data = [reserved.CMDACKN]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, [reserved.CMDACKN])
+                assert.deepEqual(Array.from(newData), [reserved.CMDACKN])
                 done()
             })
             this.stream.push(Buffer.from(data))
@@ -184,7 +184,7 @@ describe("Parser tests", () => {
         it("data packet with primitive command interlieved", (done) => {
             let data = [reserved.DATSTRT, 1, reserved.CMDACKN, reserved.DATSTOP]
             this.parser.on("data", (newData) => {
-                assert.deepEqual(newData, data)
+                assert.deepEqual(Array.from(newData), data)
                 done()
             })
             this.stream.push(Buffer.from(data))

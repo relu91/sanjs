@@ -147,13 +147,13 @@ describe("Handler tests", () => {
             //Fsm is in its last state
             this.handler.on("data", (data) => {
                 assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck","bufferDataPck"])
-                assert.deepEqual(data, datapck.slice(1, datapck.length - 1))
+                assert.deepEqual(Array.from(data), datapck.slice(1, datapck.length - 1))
                 done()
             })
 
             this.handler.on("dataStart", (data) => {
                 assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck"])
-                assert.deepEqual(decode(data), [0,1,1,0])
+                assert.deepEqual(Array.from(decode(data)), [0,1,1,0])
             })
 
             this.handler.on("error", done)
