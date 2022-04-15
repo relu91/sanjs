@@ -1,1 +1,2 @@
-module.exports = require("./lib/core")
+const lib = require("./lib/core")
+module.exports = lib

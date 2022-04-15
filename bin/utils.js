@@ -40,5 +40,5 @@ module.exports.toCommand = function (cmd) {
 }
 
 module.exports.prettyStrCmd = function (cmd) {
-    return KnownCmds.hasOwnProperty(cmd) ? cmd + "(" + KnownCmds[cmd] + ")" : cmd
+    return Object.prototype.hasOwnProperty.call(KnownCmds,cmd) ? cmd + "(" + KnownCmds[cmd] + ")" : cmd
 }

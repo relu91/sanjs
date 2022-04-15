@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*eslint no-console: off*/
 
-const sanj = require("../index")
+const SensorArea = require("../index").SensorArea
 const cli = require("commander")
 const chalk = require("chalk")
 const ProgressBar = require("progress")
@@ -71,7 +71,7 @@ function scmd(port,address,cmdcode,data,cmd) {
         baudRate: 500000
     })
 
-    const SAN = sanj(serial)
+    const SAN = new SensorArea(serial)
     SAN.shortCommand(address,sanCmd,data).then(() => {
         utils.print(quiet,chalk.green.bold("Ok"))
         utils.print(quiet)
@@ -94,7 +94,7 @@ function broadcast(port, cmdcode, data,cmd) {
     })
 
    
-    const SAN = sanj(serial)
+    const SAN = new SensorArea(serial)
     SAN.broadcast(sanCmd, data).then(SAN.close.bind(SAN))
 }
 
@@ -111,7 +111,7 @@ function sqry(port, address, cmdcode, data, cmd) {
         baudRate: parseInt(cmd.parent.boud)
     })
 
-    const SAN = sanj(serial)
+    const SAN = new SensorArea(serial)
     SAN.shortQuery(address,sanCmd,data).then((result) => {
         utils.print(quiet, chalk.green.bold("Ok"))
         utils.print(quiet)
@@ -137,7 +137,7 @@ function lqry(port, address, cmdcode, data, cmd) {
     //Patch to print all buffer
     Buffer.prototype.toString = utils.fullBufferToString
     
-    const SAN = sanj(serial)
+    const SAN = new SensorArea(serial)
     SAN.LongQuery(address,sanCmd,data).then((result) => {
         let bold = quiet ? (data) => data : chalk.bold
         utils.print(quiet, chalk.green.bold("Ok"))
@@ -185,7 +185,7 @@ async function discover(port,cmd) {
             width: 20,
             total: 255
         })
-    const test = sanj(serial)
+    const test = new SensorArea(serial)
     let sensors = await discovery(test,50,(progess,found) =>{
         bar.tick(1, { "count": found })
     })

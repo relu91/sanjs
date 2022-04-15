@@ -1,12 +1,12 @@
 const assert = require("assert")
-const san = require("../lib/core")
+const SAN = require("../lib/core").SensorArea
 const reserved = require("../lib/reserved")
 const FakeSerial = require("./fakeSerial")
 
 
 describe("Sensor area network api tests", () => {
     const port = new FakeSerial()
-    let client = san(port)
+    let client = new SAN(port)
     
     before(() => {
         port.on("error", assert.fail)        
