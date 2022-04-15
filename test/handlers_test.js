@@ -232,6 +232,54 @@ describe("Handler tests", () => {
             this.handler.start([])
         })
 
+        it("Should throw for not acknowledge", (done) => {
+            let stream = this.stream
+
+            this.handler.on("transitioned", function (data) {
+                if (data.toState === "wait") {
+                    stream.respond([reserved.NOTACKN])
+                }
+            })
+
+            this.handler.on("error", (err) => {
+                try {
+                    assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "error"])
+                    assert.notStrictEqual(err, new Error("Invalid packet response"))
+                    done()
+                } catch (error) {
+                    done(error)
+                }
+            })
+            this.handler.start([])
+        })
+
+        it("Should return with no data", (done) => {
+            let stream = this.stream
+            this.handler.on("transitioned", function (data) {
+                if (data.toState === "wait") {
+                    stream.respond([reserved.CMDSTRT, ...encode([0, 1, 0, 0]), reserved.CMDSTOP])
+                }
+            })
+
+            //Fsm is in its last state
+            this.handler.on("done", () => {
+                assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck", "done"])
+                done()
+            })
+            
+            this.handler.on("dataStart", (data) => {
+                assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck"])
+                assert.deepEqual(Array.from(decode(data)), [0, 1, 0, 0])
+            })
+
+            this.handler.on("bufferDataStart", () => {
+                assert.fail("should not transition to dataStart")
+            })
+
+            this.handler.on("error", done)
+            this.handler.start([])
+        })
+
         it("Timeout command packet", (done) => {
 
             this.handler.on("error", (err) => {
@@ -269,6 +317,31 @@ describe("Handler tests", () => {
             this.handler.start([])
         })
 
+        it("Timeout data packet after receiving at least one data packet", (done) => {
+            let stream = this.stream
+            let datapck = [reserved.DATSTRT, 1, 2, 3, 4, reserved.DATSTOP]
+
+            this.handler.on("transitioned", function (data) {
+                if (data.toState === "wait") {
+                    stream.respond([reserved.CMDSTRT, ...encode([0, 1, 2, 0]), reserved.CMDSTOP])
+                } else if (data.toState === "bufferDataPck") {
+                    stream.respond(datapck)
+                }
+            })
+
+            this.handler.on("error", (err) => {
+                try {
+                    assert.deepEqual(this.recorder.states, ["send", "wait", "handle", "sendAck", "bufferDataPck", "timeout"])
+                    assert.notStrictEqual(err, new Error("Timeout during shortquery"))
+                    done()
+                } catch (error) {
+                    done(error)
+                }
+            })
+            this.handler.initialize(this.stream, this.stream, { timeout: 200 })
+            this.handler.start([])
+        })
+
 
         it("Retry successfully", (done) => {
             let stream = this.stream
@@ -302,6 +375,34 @@ describe("Handler tests", () => {
             this.handler.start([])
         })
 
+        it("Retry successfully with no data", (done) => {
+            let stream = this.stream
+            let packet = 0
+
+            this.handler.on("transitioned", function (data) {
+
+                if (data.toState === "wait") {
+                    packet++
+                    packet === 2 && stream.respond([reserved.CMDSTRT, ...encode([0, 1, 0, 0]), reserved.CMDSTOP])
+                }
+            })
+
+            //Fsm is in its last state
+            this.handler.on("done", () => {
+                assert.deepEqual(this.recorder.states, ["send", "wait", "retry", "send", "wait", "handle", "sendAck", "done"])
+                done()
+            })
+
+            this.handler.on("dataStart", (data) => {
+                assert.deepEqual(this.recorder.states, ["send", "wait", "retry", "send", "wait", "handle", "sendAck"])
+                assert.deepEqual(Array.from(decode(data)), [0, 1, 0, 0])
+            })
+
+            this.handler.on("error", done)
+            this.handler.initialize(this.stream, this.stream, { retryTimeout: 100, retries: 1 })
+            this.handler.start([])
+        })
+
         it("Retry multiple times successfully", (done) => {
             let stream = this.stream
             let datapck = [reserved.DATSTRT, 1, 2, 3, 4, reserved.DATSTOP]
@@ -325,6 +426,7 @@ describe("Handler tests", () => {
                 }
                 assert.deepEqual(this.recorder.states, [...states, "send", "wait", "handle", "sendAck", "bufferDataPck"])
                 assert.deepEqual(Array.from(data), datapck.slice(1, datapck.length - 1))
+                assert.equal(this.handler.retries, 1)
                 done()
             })
 
@@ -335,6 +437,43 @@ describe("Handler tests", () => {
                 }
                 assert.deepEqual(this.recorder.states, [...states, "send", "wait", "handle", "sendAck"])
                 assert.deepEqual(Array.from(decode(data)), [0, 1, 1, 0])
+            })
+
+            this.handler.on("error", done)
+            this.handler.initialize(this.stream, this.stream, { retryTimeout: 100, retries: 5 })
+            this.handler.start([])
+        })
+
+        it("Retry multiple times successfully with no data", (done) => {
+            let stream = this.stream
+            let packet = 0
+
+            this.handler.on("transitioned", function (data) {
+
+                if (data.toState === "wait") {
+                    packet++
+                    packet === 6 && stream.respond([reserved.CMDSTRT, ...encode([0, 1, 0, 0]), reserved.CMDSTOP])
+                }
+            })
+
+            //Fsm is in its last state
+            this.handler.on("done", () => {
+                let states = []
+                for (let i = 0; i < 5; i++) {
+                    states.push(...["send", "wait", "retry"])
+                }
+                assert.deepEqual(this.recorder.states, [...states, "send", "wait", "handle", "sendAck", "done"])
+                assert.equal(this.handler.retries, 1)
+                done()
+            })
+
+            this.handler.on("dataStart", (data) => {
+                let states = []
+                for (let i = 0; i < 5; i++) {
+                    states.push(...["send", "wait", "retry"])
+                }
+                assert.deepEqual(this.recorder.states, [...states, "send", "wait", "handle", "sendAck"])
+                assert.deepEqual(Array.from(decode(data)), [0, 1, 0, 0])
             })
 
             this.handler.on("error", done)
