@@ -1,0 +1,4 @@
+test/
+.eslintrc.json
+.vscode/
+.travis.yml
