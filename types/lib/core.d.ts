@@ -2,22 +2,22 @@ export type Options = {
     /**
      * - global timeout for a command. When a command should fail even if it is still waiting for a response.
      */
-    timeout: number;
+    timeout?: number;
     /**
      * - Number of times to try sending a command if no response was received.
      */
-    retries: number;
+    retries?: number;
     /**
      * - Timeout for a new send of the same command.
      */
-    retryTimeout: number;
+    retryTimeout?: number;
 };
 /**
  * @typedef Options
  * @type {object}
- * @property {number} timeout - global timeout for a command. When a command should fail even if it is still waiting for a response.
- * @property {number} retries - Number of times to try sending a command if no response was received.
- * @property {number} retryTimeout - Timeout for a new send of the same command.
+ * @property {number} [timeout=2147483647] - global timeout for a command. When a command should fail even if it is still waiting for a response.
+ * @property {number} [retries=2147483646] - Number of times to try sending a command if no response was received.
+ * @property {number} [retryTimeout=2147483647] - Timeout for a new send of the same command.
  */
 /**
  * The entry point to interact with Sensor Area Network

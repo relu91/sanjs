@@ -9,6 +9,8 @@
     "url": "https://github.com/relu91/sanjs.git"
   },
   "scripts": {
+    "prepublish": "npm run types",
+    "types": "tsc",
     "test": "mocha",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
